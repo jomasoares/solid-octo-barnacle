@@ -22,16 +22,19 @@ for (dirpath, dirnames, filenames) in walk("./emails"):
 matrix = [['tipo', 'cnpj', 'nome fantasia', 'nome', 'cpf', 'email', 'telefone']]
 print("opa:\n")
 for(file) in f:
-    text_file = open("./emails/"+file, "r")
-    content = text_file.read()
-    text_file.close()
-    x = re.findall("<td style=\"color:#555555;padding-top:.+</td>", content)
-    if(len(x) == 0):
-        print("Arquivo com erro: "+file)
-    else:
-        for(idx, s) in enumerate(x):
-            x[idx] = removetags(s)
-        matrix.append(x)
+    try:
+        text_file = open("./emails/"+file, "r")
+        content = text_file.read()
+        text_file.close()
+        x = re.findall("<td style=\"color:#555555;padding-top:.+</td>", content)
+        if(len(x) == 0):
+            print("Arquivo com erro: "+file)
+        else:
+            for(idx, s) in enumerate(x):
+                x[idx] = removetags(s)
+            matrix.append(x)
+    except:
+        print("error on file: " + file)
 
 np.savetxt("lista.csv", matrix, delimiter=",", fmt='%s')
 
